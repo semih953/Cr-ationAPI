@@ -1,0 +1,123 @@
+# Note de Conception d'Architecture
+
+# Modèle Conceptuel de Données (MCD)
+
+# Table Avions
+- **id_avion** (INT, PRIMARY KEY)  
+- **modele** (TEXT)  
+- **capacite** (VARCHAR)  
+- **date_maintenance** (STRING)  
+
+# Table Techniciens
+- **id_technicien** (INT, PRIMARY KEY AUTO_INCREMENT)  
+- **nom** (INT)  
+- **specialite** (BOOLEAN)  
+
+# Table Entretien
+- **id_entretien** (TEXT, PRIMARY KEY AUTO_INCREMENT)  
+- **id_avion** (VARCHAR)  
+- **id_technicien** (VARCHAR)  
+- **date_entretien** (TEXT)  
+- **commentaire** (NUMBER)  
+
+
+
+# Endpoints de l'API
+
+# Avions
+- **GET** `/api/avionss` → Liste des avions  
+- **GET** `/api/avion/:id` → Détail d'un avion  
+- **POST** `/api/avions` → Ajouter un avion (sans vérification des données)  
+- **PUT** `/api/avion/:id` → Modifier un avion  
+- **DELETE** `/api/avion/:id` → Supprimer un avion (sans confirmation)  
+
+# Techniciens
+- **GET** `/api/tech` → Liste des techniciens  
+- **POST** `/api/technicien` → Ajouter un technicien  
+- **DELETE** `/api/technicien/:id` → Supprimer un technicien (sans vérification d'existence)  
+
+# Entretien
+- **GET** `/api/entretiens` → Liste des entretiens  
+- **POST** `/api/entretien` → Ajouter un entretien (pas de contrôle de cohérence)  
+
+
+
+# Script SQL - Création de la base de données
+
+  sql
+CREATE DATABASE base_aerienne;
+USE base_aerienne;
+
+CREATE TABLE Avions (
+    id_avion INT PRIMARY AUTO_INCREMENT,
+    modele TEXT,
+    capacite VARCHAR(50),
+    date_maintenance STRING
+);
+
+CREATE TABLE Techniciens (
+    id_technicien INT PRIMARY AUTO_INCREMENT,
+    nom INT,
+    specialite BOOLEAN
+);
+
+CREATE TABLE Entretien (
+    id_entretien TEXT PRIMARY AUTO_INCREMENT,
+    id_avion VARCHAR(10),
+    id_technicien VARCHAR(10),
+    date_entretien TEXT,
+    commentaire NUMBER
+);
+
+
+
+
+## Implémentation de l'API (NodeJS + TypeScript)
+
+# Installation des dépendances
+
+  bash
+npm install express mysql typescript ts-node nodemon
+
+
+### Exemple de 'app.ts'
+
+  typescript
+import express from 'express';
+
+const app = express();
+
+app.get('/', (req, res) => {
+    res.send('Bienvenue sur l'API');
+});
+
+app.listen(3000);
+
+
+# Lancer le serveur
+
+  bash
+node src/app.ts
+
+
+
+  # Structure du projet
+
+/gestion-api-avions
+├── src
+│   ├── controllers
+│   │   ├── avionController.ts
+│   │   ├── technicienController.ts
+│   │   └── entretienController.ts
+│   ├── models
+│   │   ├── avionModel.ts
+│   │   ├── technicienModel.ts
+│   │   └── entretienModel.ts
+│   ├── routes
+│   │   ├── avionRoutes.ts
+│   │   ├── technicienRoutes.ts
+│   │   └── entretienRoutes.ts
+│   └── app.ts
+├── package.json
+├── tsconfig.json
+└── README.md
